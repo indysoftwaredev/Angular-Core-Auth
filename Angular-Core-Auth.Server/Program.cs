@@ -1,5 +1,6 @@
 using Angular_Core_Auth.Server.Database;
 using Angular_Core_Auth.Server.Extensions;
+using Angular_Core_Auth.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +27,7 @@ builder.Services.AddAuthentication()
 /// <summary>
 /// Adds Identity services with Entity Framework stores and API endpoints.
 /// </summary>
-builder.Services.AddIdentityCore<IdentityUser>()
+builder.Services.AddIdentityCore<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
 
@@ -54,7 +55,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<ApplicationUser>();
 
 app.UseAuthorization();
 
