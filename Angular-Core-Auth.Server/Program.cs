@@ -12,16 +12,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/// <summary>
+/// Adds authorization services to the application.
+/// </summary>
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme)
+
+/// <summary>
+/// Configures authentication services with cookie and bearer token scheme.
+/// </summary>
+builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
-builder.Services.AddIdentityCore<User>()
+
+/// <summary>
+/// Adds Identity services with Entity Framework stores and API endpoints.
+/// </summary>
+builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddApiEndpoints();
 
+/// <summary>
+/// Configures the application's database context to use SQL Server.
+/// </summary>
+/// <param name="options">The options to configure the database context.</param>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AngularCoreAuth"));
 });
 
 var app = builder.Build();
@@ -34,13 +49,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
     app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
 
-app.MapIdentityApi<User>();
+app.MapIdentityApi<IdentityUser>();
 
 app.UseAuthorization();
 
